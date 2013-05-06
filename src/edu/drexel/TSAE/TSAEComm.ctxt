@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=
+comment0.target=TSAEComm()
+comment1.params=
+comment1.target=void\ init()
+comment1.text=\n\ Initializes\ a\ serial\ communication\ connection\ with\ the\ arduino.\n
+comment2.params=listener
+comment2.target=void\ addSerialListener(SerialInterface)
+comment3.params=
+comment3.target=void\ close()
+comment4.params=event
+comment4.target=void\ serialEvent(gnu.io.SerialPortEvent)
+comment5.params=
+comment5.target=boolean\ handshake()
+comment5.text=\n\ Writes\ to\ the\ arduino\ and\ then\ listens\ for\ a\ reply.\ If\ it\ doesn't\ get\ anything,\ it\ returns\ false.\n
+numComments=6
