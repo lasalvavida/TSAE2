@@ -3,6 +3,8 @@ package edu.drexel.TSAE;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * Generates a single polynomial expression from a set of points describing
@@ -79,7 +81,7 @@ public class SinglePolynomial
      * TODO: Implement a mutating string algorithm here
      */
     private String uniqueString(int num) { 
-        String ret = "";
+        String ret = "S";
         for(int i=0; i<=num/TSAEUtilities.allowedChars.length; i++) {
             if(i==num/TSAEUtilities.allowedChars.length) {
                 ret += "" + TSAEUtilities.allowedChars[num%TSAEUtilities.allowedChars.length];
@@ -87,8 +89,8 @@ public class SinglePolynomial
             else {
                 ret += "a";
             }
-            ret += "E";
         }
+		ret += "E";
         return ret;
     }
     
@@ -133,7 +135,7 @@ public class SinglePolynomial
         }
         String[] ref = new String[(system.length+1)/2];
         for(int n=0; n<ref.length; n++) {
-            ref[n] = ""+uniqueString(requiredOrder()-n);
+            ref[n] = ""+uniqueString(ref.length-1-n);
         }
         String[] solutions = TSAEUtilities.solve(system, ref);
         //symja has a hard time solving when it has determined the value of one variable, so this does the substitution for it
@@ -185,12 +187,22 @@ public class SinglePolynomial
             index++;
         }
         solutions = TSAEUtilities.solve(solutions, ref);
+		//mathematica places a backslash inside of long numbers that messes up parsing, so remove those
+		for(int i=0; i<solutions.length; i++) {
+			while(solutions[i].contains("\\")) {
+				solutions[i] = solutions[i].replace("\\","");
+			}
+			while(solutions[i].contains("\n")) {
+				solutions[i] = solutions[i].replace("\n","");
+			}
+		}
         //assign values of 1 to coefficients that are independent
+		Pattern p = Pattern.compile("S[a-z]*E");
         for(String ans : solutions) {
-            for(int n=0; n<requiredOrder(); n++) {
-                coefficients.put(uniqueString(n), new Double(1));
-                
-            }
+			Matcher m = p.matcher(ans.split("->")[1]);
+			while(m.find()) {
+				coefficients.put(m.group(0), new Double(1));
+			}
         }
         for(String ans : solutions) {
             for(String key : coefficients.keySet()) {
@@ -202,7 +214,7 @@ public class SinglePolynomial
         for(String key : coefficients.keySet()) {
             poly = poly.replaceAll(key, "" + coefficients.get(key));
         }
-        return poly;
+        return TSAEUtilities.integrate(poly,"t")+initialPosition;
     }
     
     /**

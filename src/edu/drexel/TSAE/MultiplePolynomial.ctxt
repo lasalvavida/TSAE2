@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=
+comment0.target=MultiplePolynomial()
+comment1.params=func\ offset
+comment1.target=void\ addFunction(SinglePolynomial,\ long)
+comment2.params=time
+comment2.target=double\ eval(long)
+numComments=3

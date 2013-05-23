@@ -12,7 +12,7 @@ public class Test
         /**
          * Make sure that factored polynomials are being generated properly.
          */
-        int[][] data = new int[5][2];
+        int[][] data = new int[7][2];
         data[0][0] = 0;
         data[0][1] = 1;
         data[1][0] = 4;
@@ -23,6 +23,10 @@ public class Test
         data[3][1] = 0;
         data[4][0] = 10;
         data[4][1] = 3;
+        data[5][0] = 15;
+        data[5][1] = 1;
+        data[6][0] = 25;
+        data[6][1] = 4;
         
         SinglePolynomial poly = new SinglePolynomial(data,0);
         System.out.println(poly.solve());

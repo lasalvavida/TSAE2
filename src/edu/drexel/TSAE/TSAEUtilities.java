@@ -18,6 +18,7 @@ import edu.jas.kern.ComputerThreads;
 public final class TSAEUtilities
 {
     private static boolean init = false;
+    private static boolean VERBOSE = true;
     private static EvalUtilities util = new EvalUtilities();
     public static String[] allowedChars = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
     /**
@@ -38,6 +39,12 @@ public final class TSAEUtilities
      */
     public static String integrate(String expression, String var) {
         return eval("Integrate["+expression+","+var+"]");
+    }
+    /**
+     * Integrates an expression with respect to a given variable and with the given limits.
+     */
+    public static String integrate(String expression, String var, String lowBound, String highBound) {
+        return eval("Integrate["+expression+","+var+","+lowBound+","+highBound+"]");
     }
     /**
      * Derives an expression with respect to a given variable.
@@ -101,12 +108,16 @@ public final class TSAEUtilities
         if(!init) {
             init();
         }
-        System.out.println("IN: "+expression);
+        if(VERBOSE) {
+            System.out.println("IN: "+expression);
+        }
         try {
             StringBufferWriter buf = new StringBufferWriter();
             IExpr result = util.evaluate(expression);
             OutputFormFactory.get().convert(buf, result);
-            System.out.println("OUT: "+buf.toString());
+            if(VERBOSE) {
+                System.out.println("OUT: "+buf.toString());
+            }
             return buf.toString();
         }
         catch (Exception e) {
